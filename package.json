@@ -1,0 +1,21 @@
+{
+    "name": "dot2rjs",
+    "version": "0.0.2",
+    "description": "Watch and precompile doT.js templates file to Requirejs module",
+    "preferGlobal": "true",
+    "main": "dot2rjs.js",
+    "bin": { "dot2rjs": "dot2rjs.js" },
+    "author": "Guoshun Zhang",
+    "keywords": ["templates", "doT", "precompile","Requirejs"],
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/guoshun/dot2rjs.git"
+    },
+    "dependencies": {
+        "commander": "0.5.2",
+        "dot":">= 0.2.4"
+    },
+    "engines": {  
+        "node": ">=0.6.0"
+    }
+}
