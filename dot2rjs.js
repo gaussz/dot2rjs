@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-
 (function() {
-  var baseFileName, compilePath, compileTemplate, dot, exec, exists, fs, hidden, isdotfile, notSources, outputPath, path, printLine, printWarn, program, removeSource, source, sources, spawn, timeLog, unwatchDir, useWinPathSep, wait, watch, watchDir, watchers, _i, _len, _ref;
+  var baseFileName, compilePath, compileTemplate, dot, exec, exists, fs, hidden, isdotfile, mkdirSyncWithR, notSources, outputPath, path, printLine, printWarn, program, removeSource, source, sources, spawn, timeLog, unwatchDir, useWinPathSep, wait, watch, watchDir, watchers, _i, _len, _ref;
 
   fs = require('fs');
 
@@ -19,7 +18,7 @@
 
   watchers = {};
 
-  exists = fs.exists || path.exists;
+  exists = fs.existsSync;
 
   useWinPathSep = path.sep === '\\';
 
@@ -105,6 +104,24 @@
     });
   };
 
+  mkdirSyncWithR = function(path, mode) {
+    var dirs, paths, thePath, tmp, _results;
+    thePath = path.indexOf('\\') >= 0 ? path.replace('\\', '/') : path;
+    dirs = thePath.split('/');
+    paths = [];
+    _results = [];
+    while (dirs.length >= 1) {
+      paths.push(dirs.shift());
+      tmp = paths.join('/');
+      if (!exists(tmp)) {
+        _results.push(fs.mkdirSync(tmp, mode));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
   compileTemplate = function(file, input, base) {
     var compile, compiled, e, jsDir, jsPath, modulename, result;
     try {
@@ -126,7 +143,7 @@
       if (exists(jsDir)) {
         return compile();
       } else {
-        exec("mkdir -p " + jsDir);
+        mkdirSyncWithR(jsDir, 0x1ed);
         return compile();
       }
     } catch (_error) {

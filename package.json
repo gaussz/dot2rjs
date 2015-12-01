@@ -1,6 +1,6 @@
 {
     "name": "dot2rjs",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Watch and precompile doT.js templates file to Requirejs module",
     "preferGlobal": "true",
     "main": "dot2rjs.js",

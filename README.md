@@ -25,8 +25,11 @@ dot2rjs [-w] [-o <output folder>] <src path|template file>
 
 ### Example:
 Create a doT.js template (src/ui/sample.jst).  
+```
 	<div>Hi {{=it.name}}!</div>  
 	<div>{{=it.age || ''}}</div>  
+```
+
 ```
 dot2rjs -o lib/ src/ -w
 ```

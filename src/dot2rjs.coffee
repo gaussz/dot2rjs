@@ -11,7 +11,7 @@ notSources   = {}
 watchers     = {}
 
 #---------------tools region----------------------
-exists = fs.exists or path.exists
+exists = fs.existsSync
 useWinPathSep = path.sep is '\\'
 printLine = (line) -> process.stdout.write line + '\n'
 printWarn = (line) -> process.stderr.write line + '\n'
@@ -48,6 +48,15 @@ compilePath = (source, topLevel, base)->
       notSources[source] = yes
       removeSource source, base
 
+mkdirSyncWithR = (path, mode)->
+    thePath = if path.indexOf('\\') >= 0 then path.replace '\\','/' else path
+    dirs = thePath.split '/'
+    paths = []
+    while dirs.length >= 1
+        paths.push dirs.shift()
+        tmp = paths.join '/'
+        if not exists(tmp) then fs.mkdirSync(tmp,mode)
+
 compileTemplate = (file,input,base)->
   try
     modulename = baseFileName file,yes,useWinPathSep
@@ -73,11 +82,11 @@ compileTemplate = (file,input,base)->
     if exists jsDir
       compile()
     else
-      exec "mkdir -p #{jsDir}"
+      mkdirSyncWithR jsDir,0o755
       compile()
   catch e
     console.error "#{file} compile failed"
-  
+
 watchDir = (source, base) ->
   readdirTimeout = null
   try
